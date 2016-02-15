@@ -1,0 +1,167 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        title= title
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(name='description', content='')
+        meta(name='author', content='Carlos Alvarez - Alvarez.is')
+
+        link(href='/assets/css/bootstrap.css', rel='stylesheet')
+        link(href='/assets/css/main.css', rel='stylesheet')
+        link(href='/assets/css/font-style.css', rel='stylesheet')
+        link(href='/assets/css/flexslider.css', rel='stylesheet')
+
+        script(type='text/javascript', src='http://code.jquery.com/jquery-latest.js')
+
+        link(rel='shortcut icon', href='assets/ico/favicon.ico')
+        link(rel='apple-touch-icon-precomposed', sizes='144x144', href='/assets/ico/apple-touch-icon-144-precomposed.png')
+        link(rel='apple-touch-icon-precomposed', sizes='114x114', href='/assets/ico/apple-touch-icon-114-precomposed.png')
+        link(rel='apple-touch-icon-precomposed', sizes='72x72', href='/assets/ico/apple-touch-icon-72-precomposed.png')
+        link(rel='apple-touch-icon-precomposed', href='/assets/ico/apple-touch-icon-57-precomposed.png')
+        // Google Fonts call. Font Used Open Sans & Raleway
+        link(href='http://fonts.googleapis.com/css?family=Raleway:400,300', rel='stylesheet', type='text/css')
+        link(href='http://fonts.googleapis.com/css?family=Open+Sans', rel='stylesheet', type='text/css')
+        script(type='text/javascript').
+            $(document).ready(function () {
+                $("#btn-blog-next").click(function () {
+                    $('#blogCarousel').carousel('next')
+                });
+                $("#btn-blog-prev").click(function () {
+                    $('#blogCarousel').carousel('prev')
+                });
+                $("#btn-client-next").click(function () {
+                    $('#clientCarousel').carousel('next')
+                });
+                $("#btn-client-prev").click(function () {
+                    $('#clientCarousel').carousel('prev')
+                });
+            });
+            $(window).load(function(){
+                $('.flexslider').flexslider({
+                    animation: "slide",
+                    slideshow: true,
+                    start: function(slider){
+                        $('body').removeClass('loading');
+                    }
+                });
+            });
+    body
+        // NAVIGATION MENU
+        .navbar-nav.navbar-inverse.navbar-fixed-top
+            .container
+                .navbar-header
+                    button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(href='index.html')
+                        img(src='assets/img/logo30.png', alt='')
+                        |  BLOCKS Dashboard
+                .navbar-collapse.collapse
+                    ul.nav.navbar-nav
+                        li.active
+                            a(href='index.html')
+                                i.icon-home.icon-white
+                                |  Home
+                        li
+                            a(href='manager.html')
+                                i.icon-folder-open.icon-white
+                                |  File Manager
+                        li
+                            a(href='calendar.html')
+                                i.icon-calendar.icon-white
+                                |  Calendar
+                        li
+                            a(href='tables.html')
+                                i.icon-th.icon-white
+                                |  Tables
+                        li
+                            a(href='login.html')
+                                i.icon-lock.icon-white
+                                |  Login
+                        li
+                            a(href='user.html')
+                                i.icon-user.icon-white
+                                |  User
+                // /.nav-collapse
+        .container
+            // FIRST ROW OF BLOCKS
+            .row
+                // DONUT CHART BLOCK
+                .col-sm-3.col-lg-3
+                    .dash-unit
+                        dtitle Site Bandwidth
+                        hr
+                        #load
+                        h2 45%
+                // DONUT CHART BLOCK
+                .col-sm-3.col-lg-3
+                    .dash-unit
+                        dtitle Disk Space
+                        hr
+                        #space
+                        h2 65%
+                .col-sm-3.col-lg-3
+                    // LOCAL TIME BLOCK
+                    .half-unit
+                        dtitle Local Time
+                        hr
+                        .clockcenter
+                            digiclock 12:45:25
+                    // SERVER UPTIME
+                    .half-unit
+                        dtitle Server Uptime
+                        hr
+                        .cont
+                            p
+                                img(src='assets/img/up.png', alt='')
+                                bold Up
+                                |  | 356ms.
+                .col-sm-3.col-lg-3
+                    .dash-unit
+                        dtitle Last 30 Days Stats
+                        hr
+                        br
+                        br
+                        .flexslider
+                            ul.slides
+                                li
+                                    img(src='assets/img/slide01.png', alt='slider')
+                                li
+                                    img(src='assets/img/slide02.png', alt='slider')
+                        .cont
+                            p StatCounter Information
+            // /row
+        // /container
+        #footerwrap
+            footer.clearfix
+            .container
+                .row
+                    .col-sm-12.col-lg-12
+                        p
+                            img(src='assets/img/logo.png', alt='')
+                        p Blocks Dashboard Theme - Crafted With Love - Copyright 2013
+                // /row
+            // /container
+        // /footerwrap
+        //
+          Le javascript
+          ==================================================
+        // Placed at the end of the document so the pages load faster
+        script(type='text/javascript', src='assets/js/bootstrap.js')
+        script(type='text/javascript', src='assets/js/lineandbars.js')
+        script(type='text/javascript', src='assets/js/dash-charts.js')
+        script(type='text/javascript', src='assets/js/gauge.js')
+        // NOTY JAVASCRIPT
+        script(type='text/javascript', src='assets/js/noty/jquery.noty.js')
+        script(type='text/javascript', src='assets/js/noty/layouts/top.js')
+        script(type='text/javascript', src='assets/js/noty/layouts/topLeft.js')
+        script(type='text/javascript', src='assets/js/noty/layouts/topRight.js')
+        script(type='text/javascript', src='assets/js/noty/layouts/topCenter.js')
+        // You can add more layouts if you want
+        script(type='text/javascript', src='assets/js/noty/themes/default.js')
+        // <script type="text/javascript" src="assets/js/dash-noty.js"></script> This is a Noty bubble when you init the theme
+        script(type='text/javascript', src='http://code.highcharts.com/highcharts.js')
+        script(src='assets/js/jquery.flexslider.js', type='text/javascript')
+        script(type='text/javascript', src='assets/js/admin.js')

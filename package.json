@@ -1,0 +1,35 @@
+{
+  "name": "doma",
+  "version": "1.0.0",
+  "description": "Home server",
+  "main": "app.js",
+  "dependencies": {
+    "express": "~4.13.4",
+    "jade": "~1.11.0",
+    "mysql": "~2.10.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "temp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Misioka/home.git"
+  },
+  "keywords": [
+    "home",
+    "raspberry",
+    "Pi",
+    "server",
+    "temperature",
+    "lights",
+    "node",
+    "express"
+  ],
+  "author": "Michal Karzel",
+  "license": "LGPL2",
+  "bugs": {
+    "url": "https://github.com/Misioka/home/issues"
+  },
+  "homepage": "https://github.com/Misioka/home"
+}
