@@ -87,6 +87,7 @@ h5 {
   	border-top: 1px solid #151515;
   	border-top-style: dashed;
 	margin-top:3px;
+	margin-bottom:3px;
 }
 
 .dash-unit h1 {
@@ -486,14 +487,13 @@ digiclock {
 
 
 /**********DONUT CHARTS STYLES**********/
-#load {
-	width: 11.313em;
-	height: 11.313em;
+div.dash-unit div:first-of-type {
+	width: 13.5em;
+	height: 13.5em;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	margin-bottom: 1.063em;
 	background-position: center center;
-	margin:auto;
+	margin: auto auto 1.063em;
 }
 
 #space {

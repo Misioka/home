@@ -5,7 +5,7 @@ html
         title= title
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
         meta(name='description', content='')
-        meta(name='author', content='Carlos Alvarez - Alvarez.is')
+        meta(name='author', content='Michal Karzel')
 
         link(href='/assets/css/bootstrap.css', rel='stylesheet')
         link(href='/assets/css/main.css', rel='stylesheet')
@@ -57,51 +57,34 @@ html
                         span.icon-bar
                     a.navbar-brand(href='index.html')
                         img(src='assets/img/logo30.png', alt='')
-                        |  BLOCKS Dashboard
+                        |  #{title}
                 .navbar-collapse.collapse
                     ul.nav.navbar-nav
                         li.active
-                            a(href='index.html')
+                            a(href='/')
                                 i.icon-home.icon-white
                                 |  Home
                         li
-                            a(href='manager.html')
-                                i.icon-folder-open.icon-white
-                                |  File Manager
-                        li
-                            a(href='calendar.html')
-                                i.icon-calendar.icon-white
-                                |  Calendar
-                        li
-                            a(href='tables.html')
-                                i.icon-th.icon-white
-                                |  Tables
-                        li
-                            a(href='login.html')
+                            a(href='/login')
                                 i.icon-lock.icon-white
                                 |  Login
-                        li
-                            a(href='user.html')
-                                i.icon-user.icon-white
-                                |  User
+                    //    li
+                    //        a(href='user.html')
+                    //            i.icon-user.icon-white
+                    //            |  User
                 // /.nav-collapse
         .container
             // FIRST ROW OF BLOCKS
             .row
                 // DONUT CHART BLOCK
-                .col-sm-3.col-lg-3
-                    .dash-unit
-                        dtitle Site Bandwidth
-                        hr
-                        #load
-                        h2 45%
+                each tempRow in tempRows
+                    .col-sm-3.col-lg-3
+                        .dash-unit
+                            dtitle= tempRow.sensorName
+                            hr
+                            div(id= tempRow.sensorId)
+                            h2= tempRow.temperature + ' °C'
                 // DONUT CHART BLOCK
-                .col-sm-3.col-lg-3
-                    .dash-unit
-                        dtitle Disk Space
-                        hr
-                        #space
-                        h2 65%
                 .col-sm-3.col-lg-3
                     // LOCAL TIME BLOCK
                     .half-unit
@@ -119,20 +102,40 @@ html
                                 bold Up
                                 |  | 356ms.
                 .col-sm-3.col-lg-3
-                    .dash-unit
-                        dtitle Last 30 Days Stats
+                    // LOCAL TIME BLOCK
+                    .half-unit
+                        dtitle Sun rise
                         hr
-                        br
-                        br
+                        .clockcenter
+                            p
+                                img(src='assets/img/up.png', alt='')
+                                | | #{wd.weatherdata.sun.rise}
+                    // SERVER UPTIME
+                    .half-unit
+                        dtitle Sun set
+                        hr
+                        .cont
+                            p
+                                img(src='assets/img/down.png', alt='')
+                                | | #{wd.weatherdata.sun.set}
+                .col-sm-3.col-lg-3
+                    .dash-unit
+                        dtitle Forecast
+                        hr
                         .flexslider
                             ul.slides
-                                li
-                                    img(src='assets/img/slide01.png', alt='slider')
-                                li
-                                    img(src='assets/img/slide02.png', alt='slider')
-                        .cont
-                            p StatCounter Information
-            // /row
+                                each forecast in wd.weatherdata.forecast.time
+                                    li
+                                        p= forecast.from
+                                        br
+                                        |  wind: #{Math.round(forecast.windSpeed.mps, 2) * 0.44704} mps #{forecast.windDirection.code}
+                                        br
+                                        |  clouds: #{forecast.clouds.all} %
+                                        br
+                                        |  humidity: #{forecast.humidity.value} %
+                                        br
+                                        |  precipitation: #{forecast.precipitation.value}/#{forecast.precipitation.unit} #{forecast.precipitation.type}
+            // /rowgit commit -m "remove file1.txt"
         // /container
         #footerwrap
             footer.clearfix
@@ -149,10 +152,69 @@ html
           Le javascript
           ==================================================
         // Placed at the end of the document so the pages load faster
+
         script(type='text/javascript', src='assets/js/bootstrap.js')
         script(type='text/javascript', src='assets/js/lineandbars.js')
-        script(type='text/javascript', src='assets/js/dash-charts.js')
-        script(type='text/javascript', src='assets/js/gauge.js')
+        each tempRow in tempRows
+            script(type='text/javascript').
+                $(document).ready(function () {
+                    var datas;
+                    var temperature = parseFloat(#{tempRow.temperature});
+                    var ccolor = '#3a7ec9';
+                    if (temperature > 22 && temperature <= 26) {
+                        ccolor = '#b2c831';
+                    } else if (temperature > 26) {
+                        ccolor = '#fa1d2d';
+                    }
+                    if (temperature < 0) {
+                        temperature = Math.abs(temperature);
+                        datas = [
+                            {name: '', y: 40 - temperature, color: '#3d3d3d'},
+                            {name: 'Temperature', y: temperature, color: '#fa1d2d'}
+                        ];
+                    } else {
+                        datas = [
+                            {name: 'Temperature', y: temperature, color: ccolor}, //green: b2c831
+                            {name: '', y: 40 - (parseFloat(temperature)), color: '#3d3d3d'}
+                        ];
+                    }
+                    new Highcharts.Chart({
+                        chart: {
+                            renderTo: '#{tempRow.sensorId}',
+                            margin: [0, 0, 0, 0],
+                            backgroundColor: null,
+                            plotBackgroundColor: 'none',
+                        },
+                        title: {
+                            text: null
+                        },
+                        tooltip: {
+                            formatter: function () {
+                                if (this.point.name != '') {
+                                    return this.point.name + ': #{tempRow.temperature} °C';
+                                } else {
+                                    return 'No value';
+                                }
+                            }
+                        },
+                        series: [
+                        {
+                            borderWidth: 2,
+                            borderColor: '#F1F3EB',
+                            shadow: false,
+                            type: 'pie',
+                            name: '#{tempRow.sensorName}',
+                            innerSize: '65%',
+                            data: datas,
+                            dataLabels: {
+                                enabled: false,
+                                color: '#000000',
+                                connectorColor: '#000000'
+                            }
+                        }]
+                    });
+                });
+        //script(type='text/javascript', src='assets/js/gauge.js')
         // NOTY JAVASCRIPT
         script(type='text/javascript', src='assets/js/noty/jquery.noty.js')
         script(type='text/javascript', src='assets/js/noty/layouts/top.js')

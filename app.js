@@ -1,23 +1,36 @@
 var express = require('express');
+var path = require('path');
+var fs = require('fs');
+var session  = require('express-session');
+var bodyParser = require('body-parser');
+var passport = require('passport');
+var flash    = require('connect-flash');
+var mysql = require("mysql");
+var port = 3456;
+
+require('./config/passport')(passport);
+
 var app = express();
 app.set('view engine', 'jade');
-app.use('/assets', express.static('assets'));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.set('views', path.join(__dirname, 'views'), {
+	layout: false
+});
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+	secret: 'misiojenejboceccotozrobil',
+	resave: true,
+	saveUninitialized: true
+} )); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash());
 
-app.get('/', function (req, res) {
-	res.render('index', { title: 'Hey', message: 'Hello there!'});
+require('./routes.js')(app, passport);
+
+app.listen(port, function () {
+	console.log('Example app listening on port ' + port + '!');
 });
 
-app.post('/', function (req, res) {
-	console.log(req.query);
-	/*con.query('INSERT INTO temperature SET ?', ,function(err,rows){
-		if(err) throw err;
-
-		console.log('Data received from Db:\n');
-		console.log(rows);
-	});*/
-	res.send('Got a POST temperature ;)!');
-});
-
-app.listen(3000, function () {
-	console.log('Example app listening on port 3000!');
-});
+module.exports = app;
